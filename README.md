@@ -4,6 +4,7 @@ Source code for my [MiniLD #67](http://ludumdare.com/compo/2016/05/19/minild-67/
 ## Third Party Assets
 
 * Horror Sound Library: http://opengameart.org/content/horror-sound-effects-library
+* 50 RPG Sound Effects: http://opengameart.org/content/50-rpg-sound-effects
 
 ## Useful tutorials
 
