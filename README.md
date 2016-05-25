@@ -8,6 +8,9 @@ Source code for my [MiniLD #67](http://ludumdare.com/compo/2016/05/19/minild-67/
 
 ## Useful tutorials
 
-* [Ray Casting Tutorial for Game Development](http://permadi.com/1996/05/ray-casting-tutorial-table-of-contents/)
+* [Raycasting Tutorial for Game Development](http://permadi.com/1996/05/ray-casting-tutorial-table-of-contents/)
 * [A first person engine in 265 lines](http://www.playfuljs.com/a-first-person-engine-in-265-lines/)
-* [Ray casting tutorial](http://www.rustyarcade.com/blog/read/33/ray-casting-tutorial)
+* [Raycasting tutorial](http://www.rustyarcade.com/blog/read/33/ray-casting-tutorial)
+* [Raycasting line of sight](http://gamemechanicexplorer.com/#raycasting-1)
+* [Phaser.io Raycasting Box2D example](http://phaser.io/examples/v2/box2d/raycasting)
+* [Phaser.io Tilemap Raycasting example](http://phaser.io/examples/v2/tilemaps/tilemap-ray-cast)
