@@ -9,6 +9,8 @@ Source code for my [MiniLD #67](http://ludumdare.com/compo/2016/05/19/minild-67/
 * Opening Audio (Mystery Manor): http://opengameart.org/content/mystery-manor
 * Background Audio (Horror Ambient): http://opengameart.org/content/horror-ambient
 * Footsteps: http://opengameart.org/content/foot-walking-step-sounds-on-stone-water-snow-wood-and-dirt
+* Light sound effect: http://opengameart.org/content/epic-amulet-item
+* Battle Music by Ville Nousiainen: http://opengameart.org/content/fast-fight-battle-music
 
 ## Useful tutorials
 
