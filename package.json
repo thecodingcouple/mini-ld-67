@@ -1,0 +1,29 @@
+{
+  "name": "mini-ld-67",
+  "version": "1.0.0",
+  "description": "Submission for MiniLD #67  - Classic Mashmix",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server -o -c-1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/townsean/mini-ld-67.git"
+  },
+  "keywords": [
+    "ludum",
+    "dare",
+    "minild",
+    "pac-man"
+  ],
+  "author": "Ashley Grenon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/townsean/mini-ld-67/issues"
+  },
+  "homepage": "https://github.com/townsean/mini-ld-67#readme",
+  "devDependencies": {
+    "http-server": "^0.9.0"
+  }
+}
