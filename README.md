@@ -6,6 +6,9 @@ Source code for my [MiniLD #67](http://ludumdare.com/compo/2016/05/19/minild-67/
 * Horror Sound Library: http://opengameart.org/content/horror-sound-effects-library
 * 50 RPG Sound Effects: http://opengameart.org/content/50-rpg-sound-effects
 * Spooky Forest: https://unsplash.com/photos/EBbP0Wrbmqs
+* Opening Audio (Mystery Manor): http://opengameart.org/content/mystery-manor
+* Background Audio (Horror Ambient): http://opengameart.org/content/horror-ambient
+* Footsteps: http://opengameart.org/content/foot-walking-step-sounds-on-stone-water-snow-wood-and-dirt
 
 ## Useful tutorials
 

@@ -24,6 +24,22 @@
   },
   "homepage": "https://github.com/townsean/mini-ld-67#readme",
   "devDependencies": {
-    "http-server": "^0.9.0"
+    "http-server": "^0.9.0",
+    "jspm": "^0.16.34"
+  },
+  "jspm": {
+    "directories": {
+      "baseURL": "dist",
+      "packages": "jspm_packages"
+    },
+    "configFile": "config.js",
+    "dependencies": {
+      "phaser": "github:photonstorm/phaser@^2.4.8"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.24",
+      "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "core-js": "npm:core-js@^1.1.4"
+    }
   }
 }
