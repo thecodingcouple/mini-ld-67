@@ -1,6 +1,13 @@
 # mini-ld-67
 Source code for our [MiniLD #67](http://ludumdare.com/compo/2016/05/19/minild-67/) entry.  The theme is "classic mashmix."
 
+## Built With
+
+* [Phaser Game Framework](http://phaser.io/)
+* [Tiled](http://www.mapeditor.org/)
+* [Bootstrap](http://getbootstrap.com/)
+* [Visual Studio Code](https://code.visualstudio.com/)
+
 ## Third Party Assets
 
 * Horror Sound Library: http://opengameart.org/content/horror-sound-effects-library
