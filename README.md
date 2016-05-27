@@ -21,3 +21,4 @@ Source code for our [MiniLD #67](http://ludumdare.com/compo/2016/05/19/minild-67
 * [Phaser.io Raycasting Box2D example](http://phaser.io/examples/v2/box2d/raycasting)
 * [Phaser.io Tilemap Raycasting example](http://phaser.io/examples/v2/tilemaps/tilemap-ray-cast)
 * [How to create a HTML5 Horror Game in 6 easy steps](http://www.emanueleferonato.com/2014/10/21/phaser-tutorial-how-to-create-an-html5-survival-horror-game-in-6-easy-steps/)
+* [Tiled Map Editor Tutorial Series](http://www.gamefromscratch.com/post/2015/10/14/Tiled-Map-Editor-Tutorial-Series.aspx)
