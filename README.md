@@ -20,3 +20,4 @@ Source code for my [MiniLD #67](http://ludumdare.com/compo/2016/05/19/minild-67/
 * [Raycasting line of sight](http://gamemechanicexplorer.com/#raycasting-1)
 * [Phaser.io Raycasting Box2D example](http://phaser.io/examples/v2/box2d/raycasting)
 * [Phaser.io Tilemap Raycasting example](http://phaser.io/examples/v2/tilemaps/tilemap-ray-cast)
+* [How to create a HTML5 Horror Game in 6 easy steps](http://www.emanueleferonato.com/2014/10/21/phaser-tutorial-how-to-create-an-html5-survival-horror-game-in-6-easy-steps/)
