@@ -10,10 +10,16 @@ export class Play extends Phaser.State {
             fill: 'blue' 
         };
         
-        this.game.add.text(80, 150, 'playing...', textStyle);
+        let square = this.game.add.bitmapData(32, 32);
+        square.ctx.beginPath();
+        square.ctx.rect(0, 0, 32, 32);
+        square.ctx.fillStyle = '#ff0000';
+        square.ctx.fill();
         
-        // enabling BOX2D physics
-        // this.game.physics.startSystem(Phaser.Physics.BOX2D);
+        this.sprite = this.game.add.sprite(200, 200, square);
+        
+        // enabling arcade physics
+        this.game.physics.startSystem(Phaser.Physics.ARCADE);
         
         this.player = new Player(this.game, 40, 40);
         this.game.add.existing(this.player);
@@ -28,24 +34,7 @@ export class Play extends Phaser.State {
     }
     
     update() {
-        // let velocity = 400;
-        // this.player.body.setZeroVelocity();
-        
-        // if(cursors.up.isDown) {
-        //     this.player.body.moveUp(velocity);
-        // }
-        
-        // if(cursors.down.isDown) {
-        //     this.player.body.moveDown(velocity);
-        // }
-        
-        // if(cursors.left.isDown) {
-        //     this.player.body.moveLeft(velocity);
-        // }
-        
-        // if(cursors.right.isDown) {
-        //     this.player.body.moveRight(velocity);
-        // }
+        this.player.move(this.cursors);
     }
     
     startAudio() {
