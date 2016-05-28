@@ -10,7 +10,7 @@ export class Player extends Phaser.Sprite {
         
         this.game.physics.enable(this, Phaser.Physics.ARCADE);
                 
-        this.body.drag.set(50);
+        this.body.drag.set(200);
         this.body.maxVelocity.set(500);  
         this.body.collideWorldBounds = true; 
     }
