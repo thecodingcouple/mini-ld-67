@@ -2,6 +2,7 @@ import { Phaser } from 'phaser';
 import { Player } from '../sprites/player';
 import { SmallOrb } from '../sprites/small-orb';
 import { LargeOrb } from '../sprites/large-orb';
+import { Ghost } from '../sprites/ghost';
 
 export class Play extends Phaser.State {
     preload() {
@@ -43,12 +44,19 @@ export class Play extends Phaser.State {
             this.orbs.add(largeOrb);    
         }
         
+        // add ghosts
+        this.ghosts = this.game.add.group();
+        for(let x = 0; x < 4; x++) {
+            let ghost = new Ghost(this.game, this.game.world.randomX, this.game.world.randomY);
+            this.ghosts.add(ghost);
+        }
     }
     
     update() {
         this.player.move(this.cursors);
         
         this.game.physics.arcade.collide(this.player, this.orbs, this.acquireOrb, null, this);
+        this.game.physics.arcade.collide(this.player, this.ghosts, this.ghostTouchesPlayer, null, this);
     }
     
     acquireOrb(player, orb) {
@@ -63,6 +71,10 @@ export class Play extends Phaser.State {
         }
         
         orb.destroy();
+    }
+    
+    ghostTouchesPlayer(player, ghost) {
+        // game ends
     }
     
     startAudio() {
