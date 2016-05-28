@@ -12,14 +12,6 @@ export class Play extends Phaser.State {
             fill: 'blue' 
         };
         
-        let square = this.game.add.bitmapData(32, 32);
-        square.ctx.beginPath();
-        square.ctx.rect(0, 0, 32, 32);
-        square.ctx.fillStyle = '#ff0000';
-        square.ctx.fill();
-        
-        this.sprite = this.game.add.sprite(200, 200, square);
-        
         // enabling arcade physics
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         
@@ -40,13 +32,13 @@ export class Play extends Phaser.State {
         
         // add small orbs
         this.orbs = this.game.add.group();
-        for(let x = 0; x < 5; x++) {
+        for(let x = 0; x < 15; x++) {
             let smallOrb = new SmallOrb(this.game, this.game.world.randomX, this.game.world.randomY);
             this.orbs.add(smallOrb);    
         }
         
         // add large orbs
-        for(let x = 0; x < 5; x++) {
+        for(let x = 0; x < 1; x++) {
             let largeOrb = new LargeOrb(this.game, this.game.world.randomX, this.game.world.randomY);
             this.orbs.add(largeOrb);    
         }
@@ -56,7 +48,7 @@ export class Play extends Phaser.State {
     update() {
         this.player.move(this.cursors);
         
-        this.game.physics.arcade.overlap(this.player, this.orbs, this.acquireOrb, null, this);
+        this.game.physics.arcade.collide(this.player, this.orbs, this.acquireOrb, null, this);
     }
     
     acquireOrb(player, orb) {

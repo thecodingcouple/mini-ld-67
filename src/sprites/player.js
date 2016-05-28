@@ -4,7 +4,15 @@ export class Player extends Phaser.Sprite {
     
     
     constructor(game, x, y) {
-        super(game, x, y, 'player');
+        let square = game.add.bitmapData(32, 32);
+        square.ctx.beginPath();
+        square.ctx.rect(0, 0, 32, 32);
+        square.ctx.fillStyle = '#ffff00';
+        square.ctx.fill();
+        
+        super(game, x, y, square);
+        
+        // super(game, x, y, 'player');
         
         this.footsteps = this.game.add.audio('footsteps');
         
