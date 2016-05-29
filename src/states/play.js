@@ -9,8 +9,8 @@ export class Play extends Phaser.State {
         let textStyle = { 
             font: '45px Arial',
             alight: 'center', 
-            stroke: 'blue', 
-            fill: 'blue' 
+            stroke: '#3f2618', 
+            fill: '#3f2618' 
         };
         
         // enabling arcade physics

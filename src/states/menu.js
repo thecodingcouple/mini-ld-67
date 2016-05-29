@@ -5,14 +5,22 @@ export class Menu extends Phaser.State {
         let textStyle = { 
             font: '45px Arial',
             alight: 'center', 
-            stroke: 'blue', 
-            fill: 'blue' 
-        };
+            stroke: '#5f3424', 
+            fill: '#5f3424' 
+        };        
         
-        this.game.add.text(80, 150, 'Menu', textStyle);
+        let background = this.game.add.sprite(0, 0, 'background');
+        background.scale.setTo(3, 3); 
+        
+        this.game.add.text(80, 525, 'Press ENTER to continue.', textStyle);
+        
+        textStyle.stroke = '#3f2618';
+        textStyle.fill = '#3f2618';
+        this.game.add.text(80.5, 525.5, 'Press ENTER to continue.', textStyle);
     }
     
     create() {
+        
         this.openingAudio = this.game.add.audio('openingAudio');
         this.game.sound.setDecodedCallback(this.openingAudio, this.startAudio, this);
         

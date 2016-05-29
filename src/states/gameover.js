@@ -5,11 +5,19 @@ export class GameOver extends Phaser.State {
         let textStyle = { 
             font: '45px Arial',
             alight: 'center', 
-            stroke: 'blue', 
-            fill: 'blue' 
+            stroke: '#5f3424', 
+            fill: '#5f3424' 
         };
         
-        this.game.add.text(80, 150, 'Game Over', textStyle);
+        
+        let background = this.game.add.sprite(0, 0, 'background');
+        background.scale.setTo(3, 3); 
+        
+        this.game.add.text(80, 525, 'Game Over', textStyle);
+        
+        textStyle.stroke = '#3f2618';
+        textStyle.fill = '#3f2618';
+        this.game.add.text(80.5, 525.5, 'Game Over', textStyle);
         
         let enterKey = this.game.input.keyboard.addKey(Phaser.KeyCode.ENTER);
         enterKey.onDown.addOnce( () => this.game.state.start('menu'));
