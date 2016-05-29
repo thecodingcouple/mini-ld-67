@@ -26,7 +26,8 @@ export class Load extends Phaser.State {
         this.game.load.spritesheet('ghost', 'assets/ghost.png', 32, 32, 20);
         
         this.game.load.image('bluestone', 'assets/bluestone.png');
-        this.game.load.tilemap('map', '../assets/tilemap.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('map', 'assets/tilemap.json', null, Phaser.Tilemap.TILED_JSON);
+       
         
     }
     

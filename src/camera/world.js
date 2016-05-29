@@ -77,6 +77,7 @@ export class World {
     }
     
     getSpriteTexture(sprite) {
+        this.bmd.clear();
         this.bmd.draw(sprite, 0, 0, 128, 128);
         return this.bmd.canvas;
     }

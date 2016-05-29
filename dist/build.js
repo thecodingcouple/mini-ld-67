@@ -50,6 +50,9 @@ System.register('src/states/load.js', ['npm:babel-runtime@5.8.38/helpers/get.js'
 
                         this.game.load.spritesheet('orb', 'assets/orb.png', 32, 32, 4);
                         this.game.load.spritesheet('ghost', 'assets/ghost.png', 32, 32, 20);
+
+                        this.game.load.image('bluestone', 'assets/bluestone.png');
+                        this.game.load.tilemap('map', 'assets/tilemap.json', null, Phaser.Tilemap.TILED_JSON);
                     }
                 }, {
                     key: 'create',
@@ -191,7 +194,7 @@ System.register('src/sprites/player.js', ['npm:babel-runtime@5.8.38/helpers/get.
                     this.game.physics.enable(this, Phaser.Physics.ARCADE);
 
                     this.body.drag.set(200);
-                    this.body.maxVelocity.set(500);
+                    this.body.maxVelocity.set(200);
                     this.body.collideWorldBounds = true;
                 }
 
@@ -199,6 +202,7 @@ System.register('src/sprites/player.js', ['npm:babel-runtime@5.8.38/helpers/get.
                     key: 'move',
                     value: function move(cursors) {
                         if (cursors.up.isDown) {
+                            //this.x += 1;
                             this.game.physics.arcade.accelerationFromRotation(this.rotation, 25, this.body.acceleration);
 
                             // play footsteps sound effect while walking
@@ -206,6 +210,7 @@ System.register('src/sprites/player.js', ['npm:babel-runtime@5.8.38/helpers/get.
                                 this.footsteps.play();
                             }
                         } else if (cursors.down.isDown) {
+                            //this.x -= 1;    
                             this.game.physics.arcade.accelerationFromRotation(this.rotation, -25, this.body.acceleration);
 
                             // play footsteps sound effect while walking
@@ -385,8 +390,300 @@ System.register('src/sprites/ghost.js', ['npm:babel-runtime@5.8.38/helpers/get.j
         }
     };
 });
-System.register('src/states/play.js', ['npm:babel-runtime@5.8.38/helpers/get.js', 'npm:babel-runtime@5.8.38/helpers/inherits.js', 'npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'github:photonstorm/phaser@2.4.8.js', 'src/sprites/player.js', 'src/sprites/small-orb.js', 'src/sprites/large-orb.js', 'src/sprites/ghost.js'], function (_export) {
-    var _get, _inherits, _createClass, _classCallCheck, Phaser, Player, SmallOrb, LargeOrb, Ghost, Play;
+System.register('src/camera/world.js', ['npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'src/camera/ray.js', 'github:photonstorm/phaser@2.4.8.js'], function (_export) {
+    var _createClass, _classCallCheck, Ray, Phaser, World;
+
+    return {
+        setters: [function (_npmBabelRuntime5838HelpersCreateClassJs) {
+            _createClass = _npmBabelRuntime5838HelpersCreateClassJs['default'];
+        }, function (_npmBabelRuntime5838HelpersClassCallCheckJs) {
+            _classCallCheck = _npmBabelRuntime5838HelpersClassCallCheckJs['default'];
+        }, function (_srcCameraRayJs) {
+            Ray = _srcCameraRayJs.Ray;
+        }, function (_githubPhotonstormPhaser248Js) {
+            Phaser = _githubPhotonstormPhaser248Js.Phaser;
+        }],
+        execute: function () {
+            'use strict';
+
+            World = (function () {
+                function World(tileMap) {
+                    _classCallCheck(this, World);
+
+                    this.textureMap = {};
+
+                    this.tileMap = tileMap;
+
+                    this.sprites = [];
+
+                    this.bmd = tileMap.game.add.bitmapData();
+                    this.bmd.smoothed = false;
+
+                    var mapLength = this.tileMap.layers[0].data.length;
+                    var mapWidth = this.tileMap.layers[0].data[0].length;
+                    var array = [];
+                    var mapArray = [];
+                    for (var y = 0; y < mapLength; y++) {
+                        array[y] = [];
+                        mapArray[y] = [];
+                        for (var x = 0; x < mapWidth; x++) {
+                            array[y][x] = this.tileMap.layers[0].data[y][x].index;
+                            if (array[y][x] < 0) {
+                                array[y][x] = 0;
+                            }
+
+                            mapArray[y].push(array[y][x]);
+                        }
+                    }
+
+                    this.mapArray = mapArray;
+                }
+
+                _createClass(World, [{
+                    key: 'getTile',
+                    value: function getTile(x, y) {
+                        x = Math.floor(x);
+                        y = Math.floor(y);
+                        if (y < 0 || y > this.mapArray.length - 1 || x < 0 || x > this.mapArray[y].length - 1) {
+                            return -1;
+                        }
+                        return this.mapArray[y][x];
+                    }
+                }, {
+                    key: 'convertWorldX',
+                    value: function convertWorldX(x) {
+                        return x / this.tileMap.tileWidth;
+                    }
+                }, {
+                    key: 'convertWorldY',
+                    value: function convertWorldY(y) {
+                        return y / this.tileMap.tileHeight;
+                    }
+                }, {
+                    key: 'addTexture',
+                    value: function addTexture(index, image) {
+                        this.textureMap[index] = image;
+                    }
+                }, {
+                    key: 'getTexture',
+                    value: function getTexture(index) {
+                        return this.textureMap[index];
+                    }
+                }, {
+                    key: 'addSprite',
+                    value: function addSprite(sprite) {
+                        this.sprites.push(sprite);
+                    }
+                }, {
+                    key: 'getSpriteXY',
+                    value: function getSpriteXY(x, y) {
+                        x = parseInt(x);
+                        y = parseInt(y);
+                        for (var i = 0; i < this.sprites.length; i++) {
+                            var spriteTileX = parseInt(this.convertWorldX(this.sprites[i].x));
+                            var spriteTileY = parseInt(this.convertWorldY(this.sprites[i].y));
+                            if (spriteTileX === x && spriteTileY === y) {
+                                return this.sprites[i];
+                            }
+                        }
+
+                        return null;
+                    }
+                }, {
+                    key: 'getSpriteTexture',
+                    value: function getSpriteTexture(sprite) {
+                        this.bmd.clear();
+                        this.bmd.draw(sprite, 0, 0, 128, 128);
+                        return this.bmd.canvas;
+                    }
+                }]);
+
+                return World;
+            })();
+
+            _export('World', World);
+        }
+    };
+});
+System.register("src/camera/ray.js", ["npm:babel-runtime@5.8.38/helpers/create-class.js", "npm:babel-runtime@5.8.38/helpers/class-call-check.js"], function (_export) {
+    var _createClass, _classCallCheck, Ray;
+
+    return {
+        setters: [function (_npmBabelRuntime5838HelpersCreateClassJs) {
+            _createClass = _npmBabelRuntime5838HelpersCreateClassJs["default"];
+        }, function (_npmBabelRuntime5838HelpersClassCallCheckJs) {
+            _classCallCheck = _npmBabelRuntime5838HelpersClassCallCheckJs["default"];
+        }],
+        execute: function () {
+            "use strict";
+
+            Ray = (function () {
+                function Ray(originX, originY, angle, range, world) {
+                    _classCallCheck(this, Ray);
+
+                    this.sin = Math.sin(angle);
+                    this.cos = Math.cos(angle);
+                    this.world = world;
+                    this.range = range;
+                    this.points = this._buildRay({ x: originX, y: originY, height: 0, distance: 0 });
+                }
+
+                _createClass(Ray, [{
+                    key: "_buildRay",
+                    value: function _buildRay(rayPoint) {
+                        var stepX = this._stepToGridline(this.sin, this.cos, rayPoint.x, rayPoint.y);
+                        var stepY = this._stepToGridline(this.cos, this.sin, rayPoint.y, rayPoint.x, true);
+
+                        var nextStep = stepX.lengthSquared < stepY.lengthSquared ? this._checkForWall(stepX, 1, 0, rayPoint.distance, stepX.y) : this._checkForWall(stepY, 0, 1, rayPoint.distance, stepY.x);
+
+                        if (nextStep.distance > this.range) {
+                            return [rayPoint];
+                        } else {
+                            return [rayPoint].concat(this._buildRay(nextStep));
+                        }
+                    }
+                }, {
+                    key: "_stepToGridline",
+                    value: function _stepToGridline(rise, run, originX, originY, isHorizontal) {
+                        var x = originX;
+                        var y = originY;
+                        if (run === 0) return { lengthSquared: Infinity };
+                        var dx = run > 0 ? Math.floor(x + 1) - x : Math.ceil(x - 1) - x;
+
+                        var dy = dx * (rise / run);
+                        return {
+                            x: isHorizontal ? y + dy : x + dx,
+                            y: isHorizontal ? x + dx : y + dy,
+                            lengthSquared: dx * dx + dy * dy
+                        };
+                    }
+                }, {
+                    key: "_checkForWall",
+                    value: function _checkForWall(step, shiftX, shiftY, distance, offset) {
+                        var dx = this.cos < 0 ? shiftX : 0;
+                        var dy = this.sin < 0 ? shiftY : 0;
+                        step.index = this.world.getTile(step.x - dx, step.y - dy);
+                        step.height = step.index ? 1 : 0;
+                        step.distance = distance + Math.sqrt(step.lengthSquared);
+                        step.sprite = this.world.getSpriteXY(step.x - dx, step.y - dy);
+                        step.offset = offset - Math.floor(offset);
+                        return step;
+                    }
+                }]);
+
+                return Ray;
+            })();
+
+            _export("Ray", Ray);
+        }
+    };
+});
+System.register("src/camera/camera.js", ["npm:babel-runtime@5.8.38/helpers/create-class.js", "npm:babel-runtime@5.8.38/helpers/class-call-check.js", "src/camera/world.js", "src/camera/ray.js", "github:photonstorm/phaser@2.4.8.js"], function (_export) {
+    var _createClass, _classCallCheck, World, Ray, Phaser, Camera;
+
+    return {
+        setters: [function (_npmBabelRuntime5838HelpersCreateClassJs) {
+            _createClass = _npmBabelRuntime5838HelpersCreateClassJs["default"];
+        }, function (_npmBabelRuntime5838HelpersClassCallCheckJs) {
+            _classCallCheck = _npmBabelRuntime5838HelpersClassCallCheckJs["default"];
+        }, function (_srcCameraWorldJs) {
+            World = _srcCameraWorldJs.World;
+        }, function (_srcCameraRayJs) {
+            Ray = _srcCameraRayJs.Ray;
+        }, function (_githubPhotonstormPhaser248Js) {
+            Phaser = _githubPhotonstormPhaser248Js.Phaser;
+        }],
+        execute: function () {
+            "use strict";
+
+            Camera = (function () {
+                function Camera(canvas, world, fieldOfView, numberOfRays) {
+                    _classCallCheck(this, Camera);
+
+                    this.world = world;
+                    this.ctx = canvas.getContext('2d');
+                    this.height = canvas.height;
+                    this.width = canvas.width;
+                    this.fieldOfView = fieldOfView || 0.8;
+                    this.scale = (this.width + this.height) / 1200;
+                    this.columnWidth = this.width / numberOfRays;
+                    this.numberOfRays = numberOfRays;
+                }
+
+                _createClass(Camera, [{
+                    key: "render",
+                    value: function render(sprite) {
+                        this._drawColumns({ x: this.world.convertWorldX(sprite.x), y: this.world.convertWorldY(sprite.y), direction: Phaser.Math.degToRad(sprite.angle) });
+                    }
+                }, {
+                    key: "_drawColumns",
+                    value: function _drawColumns(player) {
+                        this.ctx.save();
+                        this.ctx.fillStyle = '#000000';
+                        this.ctx.fillRect(0, 0, this.width, this.height);
+                        for (var col = 0; col < this.numberOfRays; col++) {
+                            var x = col / this.numberOfRays - 0.5;
+                            var angle = Math.atan2(x, this.fieldOfView);
+
+                            var ray = new Ray(player.x, player.y, player.direction + angle, 14, this.world);
+                            this._drawColumn(col, ray, angle);
+                        }
+                        this.ctx.restore();
+                    }
+                }, {
+                    key: "_drawColumn",
+                    value: function _drawColumn(column, ray, angle) {
+                        var left = Math.floor(this.columnWidth * column);
+                        var width = Math.ceil(this.columnWidth);
+                        var hit = -1;
+
+                        var spriteIndex = -1;
+
+                        while (++hit < ray.points.length && ray.points[hit].height <= 0) {
+                            if (ray.points[hit].sprite) {
+                                spriteIndex = hit;
+                            }
+                        }
+
+                        for (var s = ray.points.length - 1; s >= 0; s--) {
+                            var step = ray.points[s];
+                            if (s === hit && step.index != -1) {
+                                var wallTexture = this.world.getTexture(step.index);
+                                var textureX = Math.floor(wallTexture.width * step.offset);
+                                var projection = this._projectColumn(step.height, angle, step.distance);
+                                this.ctx.drawImage(wallTexture, textureX, 0, 1, wallTexture.height, left, projection.top, width, projection.height);
+                            }
+
+                            if (s === spriteIndex) {
+                                var spriteTexture = this.world.getSpriteTexture(step.sprite);
+                                var textureX = Math.floor(spriteTexture.width * step.offset);
+                                var projection = this._projectColumn(0.7, angle, step.distance);
+                                this.ctx.drawImage(spriteTexture, textureX, 0, 1, spriteTexture.height, left, projection.top, width, projection.height);
+                            }
+                        }
+                    }
+                }, {
+                    key: "_projectColumn",
+                    value: function _projectColumn(height, angle, distance) {
+                        var z = distance * Math.cos(angle);
+                        var wallHeight = this.height * height / z;
+                        var bottom = this.height / 2 * (1 + 1 / z);
+                        return {
+                            top: bottom - wallHeight,
+                            height: wallHeight
+                        };
+                    }
+                }]);
+
+                return Camera;
+            })();
+
+            _export("Camera", Camera);
+        }
+    };
+});
+System.register('src/states/play.js', ['npm:babel-runtime@5.8.38/helpers/get.js', 'npm:babel-runtime@5.8.38/helpers/inherits.js', 'npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'github:photonstorm/phaser@2.4.8.js', 'src/sprites/player.js', 'src/sprites/small-orb.js', 'src/sprites/large-orb.js', 'src/sprites/ghost.js', 'src/camera/world.js', 'src/camera/camera.js'], function (_export) {
+    var _get, _inherits, _createClass, _classCallCheck, Phaser, Player, SmallOrb, LargeOrb, Ghost, World, Camera, Play;
 
     return {
         setters: [function (_npmBabelRuntime5838HelpersGetJs) {
@@ -407,6 +704,10 @@ System.register('src/states/play.js', ['npm:babel-runtime@5.8.38/helpers/get.js'
             LargeOrb = _srcSpritesLargeOrbJs.LargeOrb;
         }, function (_srcSpritesGhostJs) {
             Ghost = _srcSpritesGhostJs.Ghost;
+        }, function (_srcCameraWorldJs) {
+            World = _srcCameraWorldJs.World;
+        }, function (_srcCameraCameraJs) {
+            Camera = _srcCameraCameraJs.Camera;
         }],
         execute: function () {
             'use strict';
@@ -433,7 +734,8 @@ System.register('src/states/play.js', ['npm:babel-runtime@5.8.38/helpers/get.js'
                         // enabling arcade physics
                         this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-                        this.player = new Player(this.game, 40, 40);
+                        this.player = new Player(this.game, 100, 100);
+                        this.player.scale.setTo(0.1);
                         this.game.add.existing(this.player);
 
                         // sounds when orbs are acquired
@@ -446,6 +748,17 @@ System.register('src/states/play.js', ['npm:babel-runtime@5.8.38/helpers/get.js'
                 }, {
                     key: 'create',
                     value: function create() {
+                        this.map = this.game.add.tilemap('map');
+                        this.map.addTilesetImage('bluestone');
+                        this.map.setCollisionBetween(1, 2);
+                        this.layer = this.map.createLayer('Tile Layer 1');
+                        this.layer.resizeWorld();
+
+                        this.world = new World(this.map);
+                        this.world.addTexture(1, this.game.cache.getImage('bluestone'));
+
+                        this.camera = new Camera(document.getElementById('display'), this.world, 0.8, 320);
+
                         this.backgroundAudio = this.game.add.audio('backgroundAudio');
                         this.game.sound.setDecodedCallback(this.backgroundAudio, this.startAudio, this);
 
@@ -476,6 +789,7 @@ System.register('src/states/play.js', ['npm:babel-runtime@5.8.38/helpers/get.js'
                         for (var x = 0; x < 4; x++) {
                             var ghost = new Ghost(this.game, this.game.world.randomX, this.game.world.randomY, ghostFrames[x]);
                             this.ghosts.add(ghost);
+                            this.world.addSprite(ghost);
                         }
                     }
                 }, {
@@ -489,8 +803,11 @@ System.register('src/states/play.js', ['npm:babel-runtime@5.8.38/helpers/get.js'
                             // todo: go to some point on the map
                         }
 
+                        this.game.physics.arcade.collide(this.orbs, this.orbs);
                         this.game.physics.arcade.collide(this.player, this.orbs, this.acquireOrb, null, this);
                         this.game.physics.arcade.overlap(this.player, this.ghosts, this.ghostTouchesPlayer, null, this);
+                        this.game.physics.arcade.collide(this.player, this.layer);
+                        this.camera.render(this.player);
                     }
                 }, {
                     key: 'acquireOrb',
