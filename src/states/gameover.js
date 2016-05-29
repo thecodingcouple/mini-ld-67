@@ -14,15 +14,15 @@ export class GameOver extends Phaser.State {
         let enterKey = this.game.input.keyboard.addKey(Phaser.KeyCode.ENTER);
         enterKey.onDown.addOnce( () => this.game.state.start('menu'));
         
-        this.openingAudio = this.game.add.audio('openingAudio');
-        this.game.sound.setDecodedCallback(this.openingAudio, this.startAudio, this);
+        this.gameOverAudio = this.game.add.audio('gameover');
+        this.game.sound.setDecodedCallback(this.gameOverAudio, this.startAudio, this);
     }
     
     startAudio() {
-        this.openingAudio.loopFull();
+        this.gameOverAudio.loopFull();
     }
     
     shutdown() {
-        this.openingAudio.stop();
+        this.gameOverAudio.stop();
     }
 }

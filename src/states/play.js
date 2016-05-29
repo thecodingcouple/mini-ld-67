@@ -33,7 +33,7 @@ export class Play extends Phaser.State {
         
         // add small orbs
         this.orbs = this.game.add.group();
-        for(let x = 0; x < 15; x++) {
+        for(let x = 0; x < 10; x++) {
             let smallOrb = new SmallOrb(this.game, this.game.world.randomX, this.game.world.randomY);
             this.orbs.add(smallOrb);    
         }
@@ -92,7 +92,10 @@ export class Play extends Phaser.State {
         this.ghosts.callAll('stopFleeing');
     }
     
-    ghostTouchesPlayer(player, ghost) {
+    ghostTouchesPlayer(player, ghost) {  
+        let screamSoundEffect = this.game.add.audio('scream');   
+        screamSoundEffect.play();
+        
         this.game.state.start('gameover');
     }
     

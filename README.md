@@ -18,6 +18,7 @@ Source code for our [MiniLD #67](http://ludumdare.com/compo/2016/05/19/minild-67
 * Footsteps: http://opengameart.org/content/foot-walking-step-sounds-on-stone-water-snow-wood-and-dirt
 * Light sound effect: http://opengameart.org/content/epic-amulet-item
 * Battle Music by Ville Nousiainen: http://opengameart.org/content/fast-fight-battle-music
+* Game Over music: http://opengameart.org/content/game-over-iii
 
 ## Useful tutorials
 
