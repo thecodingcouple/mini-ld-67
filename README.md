@@ -1,5 +1,5 @@
 # mini-ld-67
-Source code for our [MiniLD #67](http://ludumdare.com/compo/2016/05/19/minild-67/) entry.  The theme is "classic mashmix."
+Source code for our [MiniLD #67](http://ludumdare.com/compo/2016/05/19/minild-67/) entry.  The theme is "classic mashmix." Play it [here](http://thecodingcouple.github.io/mini-ld-67/)!
 
 ## Built With
 
