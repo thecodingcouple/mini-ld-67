@@ -3,6 +3,8 @@ import { Player } from '../sprites/player';
 import { SmallOrb } from '../sprites/small-orb';
 import { LargeOrb } from '../sprites/large-orb';
 import { Ghost } from '../sprites/ghost';
+import { World } from '../camera/world';
+import { Camera } from '../camera/camera';
 
 export class Play extends Phaser.State {
     preload() {
@@ -16,7 +18,8 @@ export class Play extends Phaser.State {
         // enabling arcade physics
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         
-        this.player = new Player(this.game, 40, 40);
+        this.player = new Player(this.game, 100, 100);
+        this.player.scale.setTo(0.1);
         this.game.add.existing(this.player);     
         
         // sounds when orbs are acquired
@@ -28,6 +31,17 @@ export class Play extends Phaser.State {
     }
     
     create() {
+        this.map = this.game.add.tilemap('map');
+        this.map.addTilesetImage('bluestone');
+        this.map.setCollisionBetween(1,2);
+        this.layer = this.map.createLayer('Tile Layer 1');
+        this.layer.resizeWorld();
+        
+        this.world = new World(this.map);
+        this.world.addTexture(1, this.game.cache.getImage('bluestone'));
+
+        this.camera = new Camera(document.getElementById('display'), this.world, 0.8, 320);
+        
         this.backgroundAudio = this.game.add.audio('backgroundAudio');
         this.game.sound.setDecodedCallback(this.backgroundAudio, this.startAudio, this);
         
@@ -58,6 +72,7 @@ export class Play extends Phaser.State {
         for(let x = 0; x < 4; x++) {
             let ghost = new Ghost(this.game, this.game.world.randomX, this.game.world.randomY, ghostFrames[x]);
             this.ghosts.add(ghost);
+            this.world.addSprite(ghost);
         }
     }
     
@@ -73,6 +88,8 @@ export class Play extends Phaser.State {
         this.game.physics.arcade.collide(this.orbs, this.orbs);
         this.game.physics.arcade.collide(this.player, this.orbs, this.acquireOrb, null, this);
         this.game.physics.arcade.overlap(this.player, this.ghosts, this.ghostTouchesPlayer, null, this);
+        this.game.physics.arcade.collide(this.player, this.layer);
+        this.camera.render(this.player);
     }
     
     acquireOrb(player, orb) {

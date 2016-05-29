@@ -44,7 +44,7 @@ export class Ray {
         step.index = this.world.getTile(step.x - dx, step.y - dy);
         step.height = step.index ? 1 : 0;
         step.distance = distance + Math.sqrt(step.lengthSquared);
-        
+        step.sprite = this.world.getSpriteXY(step.x - dx, step.y - dy);
         step.offset = offset - Math.floor(offset);
         return step;
     }
