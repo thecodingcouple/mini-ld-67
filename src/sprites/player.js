@@ -19,19 +19,21 @@ export class Player extends Phaser.Sprite {
         this.game.physics.enable(this, Phaser.Physics.ARCADE);
                 
         this.body.drag.set(200);
-        this.body.maxVelocity.set(500);  
+        this.body.maxVelocity.set(200);  
         this.body.collideWorldBounds = true; 
     }
     
     move(cursors) {        
         if(cursors.up.isDown) {
+            //this.x += 1;
             this.game.physics.arcade.accelerationFromRotation(this.rotation, 25, this.body.acceleration);
             
             // play footsteps sound effect while walking
             if(!this.footsteps.isPlaying) {  
                 this.footsteps.play();
             }
-        } else if(cursors.down.isDown) {       
+        } else if(cursors.down.isDown) {  
+            //this.x -= 1;     
             this.game.physics.arcade.accelerationFromRotation(this.rotation, -25, this.body.acceleration);            
             
             // play footsteps sound effect while walking
@@ -48,9 +50,9 @@ export class Player extends Phaser.Sprite {
         }     
         
         if(cursors.left.isDown) {
-            this.body.angularVelocity = -50;
+           this.body.angularVelocity = -50;
         } else if(cursors.right.isDown) {
-            this.body.angularVelocity = 50;
+           this.body.angularVelocity = 50;
         } else {
             this.body.angularVelocity = 0;
         }

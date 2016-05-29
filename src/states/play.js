@@ -70,6 +70,7 @@ export class Play extends Phaser.State {
             // todo: go to some point on the map
         }
         
+        this.game.physics.arcade.collide(this.orbs, this.orbs);
         this.game.physics.arcade.collide(this.player, this.orbs, this.acquireOrb, null, this);
         this.game.physics.arcade.overlap(this.player, this.ghosts, this.ghostTouchesPlayer, null, this);
     }
