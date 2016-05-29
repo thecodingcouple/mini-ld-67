@@ -22,7 +22,7 @@ export class Play extends Phaser.State {
         // sounds when orbs are acquired
         this.smallOrbSoundEffect = this.game.add.audio('lightAbsorption');   
         this.largeOrbSoundEffect = this.game.add.audio('powerUp');   
-        
+        this.largeOrbSoundEffect.onStop.add(this.powerUpOver, this);
     }
     
     create() {
@@ -88,6 +88,10 @@ export class Play extends Phaser.State {
         }
     }
     
+    powerUpOver(sound) {
+        this.ghosts.callAll('stopFleeing');
+    }
+    
     ghostTouchesPlayer(player, ghost) {
         this.game.state.start('gameover');
     }
@@ -98,5 +102,9 @@ export class Play extends Phaser.State {
     
     shutdown() {
         this.backgroundAudio.stop();
+        
+        if (this.largeOrbSoundEffect.isPlaying) {
+            this.largeOrbSoundEffect.stop();
+        } 
     }
 }
