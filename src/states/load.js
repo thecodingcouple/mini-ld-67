@@ -18,7 +18,7 @@ export class Load extends Phaser.State {
         this.game.load.audio('powerUp', ['/assets/fight.wav', '../assets/fight.ogg']);
         
         this.game.load.spritesheet('orb', '/assets/orb.png', 32, 32, 4);
-        this.game.load.spritesheet('ghost', '/assets/ghost.png', 32, 32, 4);
+        this.game.load.spritesheet('ghost', '/assets/ghost.png', 32, 32, 20);
         
     }
     

@@ -73,15 +73,23 @@ export class Play extends Phaser.State {
             } else {
                 this.largeOrbSoundEffect.play();
             }
+            
+            this.ghosts.callAll('beginFleeing');
+            
         } else {
             this.smallOrbSoundEffect.play();
         }
         
         orb.destroy();
+        
+        // player wins the game!
+        if(this.orbs.children.length === 0) {
+            this.game.state.start('victory');
+        }
     }
     
     ghostTouchesPlayer(player, ghost) {
-        // game ends
+        this.game.state.start('gameover');
     }
     
     startAudio() {
