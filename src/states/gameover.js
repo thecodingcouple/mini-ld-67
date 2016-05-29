@@ -37,7 +37,7 @@ export class GameOver extends Phaser.State {
     }
     
     startAudio() {
-        this.gameOverAudio.loopFull();
+        this.gameOverAudio.play();
     }
     
     shutdown() {

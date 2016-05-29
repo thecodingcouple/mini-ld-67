@@ -5,8 +5,8 @@ export class Victory extends Phaser.State {
         let textStyle = { 
             font: '45px Arial',
             alight: 'center', 
-            stroke: '#5f3424', 
-            fill: '#5f3424' 
+            stroke: '#3175FF', 
+            fill: '#3175FF' 
         };
                        
         
@@ -15,8 +15,8 @@ export class Victory extends Phaser.State {
         
         this.game.add.text(80, 525, 'Victory!', textStyle);
         
-        textStyle.stroke = '#3f2618';
-        textStyle.fill = '#3f2618';
+        textStyle.stroke = '#488DFF';
+        textStyle.fill = '#488DFF';
         this.game.add.text(80.5, 525.5, 'Victory!', textStyle);
         
         textStyle.stroke = '#3f2618';
@@ -32,15 +32,15 @@ export class Victory extends Phaser.State {
         let enterKey = this.game.input.keyboard.addKey(Phaser.KeyCode.ENTER);
         enterKey.onDown.addOnce( () => this.game.state.start('menu'));
         
-        this.openingAudio = this.game.add.audio('openingAudio');
-        this.game.sound.setDecodedCallback(this.openingAudio, this.startAudio, this);
+        this.victoryAudio = this.game.add.audio('victory');
+        this.game.sound.setDecodedCallback(this.victoryAudio, this.startAudio, this);
     }
     
     startAudio() {
-        this.openingAudio.loopFull();
+        this.victoryAudio.play();
     }
     
     shutdown() {
-        this.openingAudio.stop();
+        this.victoryAudio.stop();
     }
 }
