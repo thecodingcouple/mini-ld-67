@@ -23,6 +23,8 @@ export class Play extends Phaser.State {
         this.smallOrbSoundEffect = this.game.add.audio('lightAbsorption');   
         this.largeOrbSoundEffect = this.game.add.audio('powerUp');   
         this.largeOrbSoundEffect.onStop.add(this.powerUpOver, this);
+        
+        this.areGhostsChasing = true;
     }
     
     create() {
@@ -62,6 +64,10 @@ export class Play extends Phaser.State {
     update() {
         this.player.move(this.cursors);
         
+        if(this.areGhostsChasing === true ){            
+            this.ghosts.forEach(this.game.physics.arcade.moveToObject, this.game.arcade, false, this.player, 25);
+        }
+        
         this.game.physics.arcade.collide(this.player, this.orbs, this.acquireOrb, null, this);
         this.game.physics.arcade.collide(this.player, this.ghosts, this.ghostTouchesPlayer, null, this);
     }
@@ -75,6 +81,7 @@ export class Play extends Phaser.State {
             }
             
             this.ghosts.callAll('beginFleeing');
+            this.areGhostsChasing = false;
             
         } else {
             this.smallOrbSoundEffect.play();
@@ -90,6 +97,7 @@ export class Play extends Phaser.State {
     
     powerUpOver(sound) {
         this.ghosts.callAll('stopFleeing');
+        this.areGhostsChasing = true;
     }
     
     ghostTouchesPlayer(player, ghost) {  

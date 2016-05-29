@@ -14,8 +14,6 @@ export class SmallOrb extends Phaser.Sprite {
         this.enableBody = true;
         this.immovable = true;
         this.body.moves = false;
-        this.body.width -= 10;
-        this.body.height -= 10;  
         this.physicsBodyType = Phaser.Physics.ARCADE;
     }
 }
