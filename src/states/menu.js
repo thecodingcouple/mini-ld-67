@@ -4,7 +4,6 @@ export class Menu extends Phaser.State {
     preload() {
         let textStyle = { 
             font: '45px Arial',
-            alight: 'center', 
             stroke: '#5f3424', 
             fill: '#5f3424' 
         };        
@@ -17,6 +16,16 @@ export class Menu extends Phaser.State {
         textStyle.stroke = '#3f2618';
         textStyle.fill = '#3f2618';
         this.game.add.text(80.5, 525.5, 'Press ENTER to continue.', textStyle);
+        
+        textStyle.stroke = '#3f2618';
+        textStyle.fill = '#3f2618';
+        textStyle.fontSize = 60;
+        textStyle.align = 'center';
+        this.game.add.text(400, 30, 'Ghosts At\n42nd Street', textStyle);   
+        
+        textStyle.stroke = '#cb8e18';
+        textStyle.fill = '#cb8e18';
+        this.game.add.text(400, 30, 'Ghosts At\n42nd Street', textStyle);      
     }
     
     create() {

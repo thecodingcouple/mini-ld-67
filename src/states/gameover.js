@@ -5,8 +5,8 @@ export class GameOver extends Phaser.State {
         let textStyle = { 
             font: '45px Arial',
             alight: 'center', 
-            stroke: '#5f3424', 
-            fill: '#5f3424' 
+            stroke: '#bd3500', 
+            fill: '#bd3500' 
         };
         
         
@@ -15,9 +15,19 @@ export class GameOver extends Phaser.State {
         
         this.game.add.text(80, 525, 'Game Over', textStyle);
         
+        textStyle.stroke = '#d43c01';
+        textStyle.fill = '#d43c01';
+        this.game.add.text(80.5, 525.5, 'Game Over', textStyle);
+        
         textStyle.stroke = '#3f2618';
         textStyle.fill = '#3f2618';
-        this.game.add.text(80.5, 525.5, 'Game Over', textStyle);
+        textStyle.fontSize = 60;
+        textStyle.align = 'center';
+        this.game.add.text(400, 30, 'Ghosts At\n42nd Street', textStyle);   
+        
+        textStyle.stroke = '#cb8e18';
+        textStyle.fill = '#cb8e18';
+        this.game.add.text(400, 30, 'Ghosts At\n42nd Street', textStyle);
         
         let enterKey = this.game.input.keyboard.addKey(Phaser.KeyCode.ENTER);
         enterKey.onDown.addOnce( () => this.game.state.start('menu'));
