@@ -45,9 +45,16 @@ export class Play extends Phaser.State {
         }
         
         // add ghosts
+        let cyanGhost = [0, 5, 10, 15];
+        let redGhost = [1, 6, 11, 16];
+        let pinkGhost = [2, 7, 12, 17];
+        let yellowGhost = [3, 8, 13, 18];
+        
+        let ghostFrames = [cyanGhost, redGhost, pinkGhost, yellowGhost];
+        
         this.ghosts = this.game.add.group();
         for(let x = 0; x < 4; x++) {
-            let ghost = new Ghost(this.game, this.game.world.randomX, this.game.world.randomY);
+            let ghost = new Ghost(this.game, this.game.world.randomX, this.game.world.randomY, ghostFrames[x]);
             this.ghosts.add(ghost);
         }
     }
