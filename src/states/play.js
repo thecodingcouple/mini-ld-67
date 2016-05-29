@@ -66,10 +66,12 @@ export class Play extends Phaser.State {
         
         if(this.areGhostsChasing === true ){            
             this.ghosts.forEach(this.game.physics.arcade.moveToObject, this.game.arcade, false, this.player, 25);
+        } else {
+            // todo: go to some point on the map
         }
         
         this.game.physics.arcade.collide(this.player, this.orbs, this.acquireOrb, null, this);
-        this.game.physics.arcade.collide(this.player, this.ghosts, this.ghostTouchesPlayer, null, this);
+        this.game.physics.arcade.overlap(this.player, this.ghosts, this.ghostTouchesPlayer, null, this);
     }
     
     acquireOrb(player, orb) {
@@ -104,6 +106,7 @@ export class Play extends Phaser.State {
         let screamSoundEffect = this.game.add.audio('scream');   
         screamSoundEffect.play();
         
+        // player loses the game!
         this.game.state.start('gameover');
     }
     
