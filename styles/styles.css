@@ -26,3 +26,7 @@ canvas {
     color: white;
     text-decoration: none;
 }
+
+.navbar-brand img {
+    margin-top: -5px;
+}

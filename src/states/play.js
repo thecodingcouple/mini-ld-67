@@ -22,7 +22,9 @@ export class Play extends Phaser.State {
         // sounds when orbs are acquired
         this.smallOrbSoundEffect = this.game.add.audio('lightAbsorption');   
         this.largeOrbSoundEffect = this.game.add.audio('powerUp');   
+        this.largeOrbSoundEffect.onStop.add(this.powerUpOver, this);
         
+        this.areGhostsChasing = true;
     }
     
     create() {
@@ -33,7 +35,7 @@ export class Play extends Phaser.State {
         
         // add small orbs
         this.orbs = this.game.add.group();
-        for(let x = 0; x < 15; x++) {
+        for(let x = 0; x < 10; x++) {
             let smallOrb = new SmallOrb(this.game, this.game.world.randomX, this.game.world.randomY);
             this.orbs.add(smallOrb);    
         }
@@ -45,15 +47,26 @@ export class Play extends Phaser.State {
         }
         
         // add ghosts
+        let cyanGhost = [0, 5, 10, 15];
+        let redGhost = [1, 6, 11, 16];
+        let pinkGhost = [2, 7, 12, 17];
+        let yellowGhost = [3, 8, 13, 18];
+        
+        let ghostFrames = [cyanGhost, redGhost, pinkGhost, yellowGhost];
+        
         this.ghosts = this.game.add.group();
         for(let x = 0; x < 4; x++) {
-            let ghost = new Ghost(this.game, this.game.world.randomX, this.game.world.randomY);
+            let ghost = new Ghost(this.game, this.game.world.randomX, this.game.world.randomY, ghostFrames[x]);
             this.ghosts.add(ghost);
         }
     }
     
     update() {
         this.player.move(this.cursors);
+        
+        if(this.areGhostsChasing === true ){            
+            this.ghosts.forEach(this.game.physics.arcade.moveToObject, this.game.arcade, false, this.player, 25);
+        }
         
         this.game.physics.arcade.collide(this.player, this.orbs, this.acquireOrb, null, this);
         this.game.physics.arcade.collide(this.player, this.ghosts, this.ghostTouchesPlayer, null, this);
@@ -66,15 +79,32 @@ export class Play extends Phaser.State {
             } else {
                 this.largeOrbSoundEffect.play();
             }
+            
+            this.ghosts.callAll('beginFleeing');
+            this.areGhostsChasing = false;
+            
         } else {
             this.smallOrbSoundEffect.play();
         }
         
         orb.destroy();
+        
+        // player wins the game!
+        if(this.orbs.children.length === 0) {
+            this.game.state.start('victory');
+        }
     }
     
-    ghostTouchesPlayer(player, ghost) {
-        // game ends
+    powerUpOver(sound) {
+        this.ghosts.callAll('stopFleeing');
+        this.areGhostsChasing = true;
+    }
+    
+    ghostTouchesPlayer(player, ghost) {  
+        let screamSoundEffect = this.game.add.audio('scream');   
+        screamSoundEffect.play();
+        
+        this.game.state.start('gameover');
     }
     
     startAudio() {
@@ -83,5 +113,9 @@ export class Play extends Phaser.State {
     
     shutdown() {
         this.backgroundAudio.stop();
+        
+        if (this.largeOrbSoundEffect.isPlaying) {
+            this.largeOrbSoundEffect.stop();
+        } 
     }
 }
