@@ -191,7 +191,7 @@ System.register('src/sprites/player.js', ['npm:babel-runtime@5.8.38/helpers/get.
                     this.game.physics.enable(this, Phaser.Physics.ARCADE);
 
                     this.body.drag.set(200);
-                    this.body.maxVelocity.set(500);
+                    this.body.maxVelocity.set(200);
                     this.body.collideWorldBounds = true;
                 }
 
@@ -199,6 +199,7 @@ System.register('src/sprites/player.js', ['npm:babel-runtime@5.8.38/helpers/get.
                     key: 'move',
                     value: function move(cursors) {
                         if (cursors.up.isDown) {
+                            //this.x += 1;
                             this.game.physics.arcade.accelerationFromRotation(this.rotation, 25, this.body.acceleration);
 
                             // play footsteps sound effect while walking
@@ -206,6 +207,7 @@ System.register('src/sprites/player.js', ['npm:babel-runtime@5.8.38/helpers/get.
                                 this.footsteps.play();
                             }
                         } else if (cursors.down.isDown) {
+                            //this.x -= 1;    
                             this.game.physics.arcade.accelerationFromRotation(this.rotation, -25, this.body.acceleration);
 
                             // play footsteps sound effect while walking
@@ -489,6 +491,7 @@ System.register('src/states/play.js', ['npm:babel-runtime@5.8.38/helpers/get.js'
                             // todo: go to some point on the map
                         }
 
+                        this.game.physics.arcade.collide(this.orbs, this.orbs);
                         this.game.physics.arcade.collide(this.player, this.orbs, this.acquireOrb, null, this);
                         this.game.physics.arcade.overlap(this.player, this.ghosts, this.ghostTouchesPlayer, null, this);
                     }

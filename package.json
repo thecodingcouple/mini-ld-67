@@ -29,10 +29,6 @@
     "jspm": "^0.16.34"
   },
   "jspm": {
-    "directories": {
-      "packages": "jspm_packages"
-    },
-    "configFile": "config.js",
     "dependencies": {
       "phaser": "github:photonstorm/phaser@^2.4.8"
     },
