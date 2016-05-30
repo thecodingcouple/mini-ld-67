@@ -7,6 +7,11 @@ export class World {
         
         this.tileMap = tileMap;
         
+        this.sprites = [];
+        
+        this.bmd = tileMap.game.add.bitmapData();
+        this.bmd.smoothed = false;
+        
         let mapLength = this.tileMap.layers[0].data.length;
         let mapWidth = this.tileMap.layers[0].data[0].length;
         let array = [];
@@ -51,5 +56,29 @@ export class World {
     
     getTexture(index) {
         return this.textureMap[index];
+    }
+    
+    addSprite(sprite) {
+        this.sprites.push(sprite);    
+    }
+    
+    getSpriteXY(x, y) {
+        x = parseInt(x);
+        y = parseInt(y);
+        for (let i = 0; i < this.sprites.length; i++) {
+            let spriteTileX = parseInt(this.convertWorldX(this.sprites[i].x));
+            let spriteTileY = parseInt(this.convertWorldY(this.sprites[i].y));
+            if (spriteTileX === x && spriteTileY === y) {
+                return this.sprites[i];
+            }
+        }
+        
+        return null;
+    }
+    
+    getSpriteTexture(sprite) {
+        this.bmd.clear();
+        this.bmd.draw(sprite, 0, 0, 128, 128);
+        return this.bmd.canvas;
     }
 }

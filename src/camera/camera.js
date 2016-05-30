@@ -36,17 +36,32 @@ export class Camera {
         let left = Math.floor(this.columnWidth * column);
         let width = Math.ceil(this.columnWidth);
         let hit = -1;
-      
-        while (++hit < ray.points.length && ray.points[hit].height <= 0);
+        
+        let spriteIndex = -1;
+        
+        while (++hit < ray.points.length && ray.points[hit].height <= 0)
+        {
+            if (ray.points[hit].sprite) {
+                spriteIndex = hit;
+            }
+        }
         
         for (let s = ray.points.length - 1; s >= 0; s--) {
             let step = ray.points[s];
-            if (s === hit) {
+            if (s === hit && step.index != -1) {
                 let wallTexture = this.world.getTexture(step.index);
                 let textureX = Math.floor(wallTexture.width * step.offset);
                 let projection = this._projectColumn(step.height, angle, step.distance);
                 this.ctx.drawImage(wallTexture, textureX, 0, 1, wallTexture.height, left, projection.top, width, projection.height); 
             }
+            
+            if (s === spriteIndex) {
+                let spriteTexture = this.world.getSpriteTexture(step.sprite);
+                let textureX = Math.floor(spriteTexture.width * step.offset);
+                let projection = this._projectColumn(0.7, angle, step.distance);
+                this.ctx.drawImage(spriteTexture, textureX, 0, 1, spriteTexture.height, left, projection.top, width, projection.height);               
+            } 
+
         }
     }
     
@@ -59,5 +74,4 @@ export class Camera {
             height: wallHeight
         };
     }
-    
 }
