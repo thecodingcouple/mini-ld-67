@@ -187,8 +187,6 @@ System.register('src/sprites/player.js', ['npm:babel-runtime@5.8.38/helpers/get.
 
                     _get(Object.getPrototypeOf(Player.prototype), 'constructor', this).call(this, game, x, y, square);
 
-                    // super(game, x, y, 'player');
-
                     this.footsteps = this.game.add.audio('footsteps');
 
                     this.game.physics.enable(this, Phaser.Physics.ARCADE);
