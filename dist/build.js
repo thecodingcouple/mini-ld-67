@@ -193,7 +193,7 @@ System.register('src/sprites/player.js', ['npm:babel-runtime@5.8.38/helpers/get.
 
                     this.game.physics.enable(this, Phaser.Physics.ARCADE);
 
-                    this.body.drag.set(200);
+                    this.body.angularDrag = 50;
                     this.body.maxVelocity.set(200);
                     this.body.collideWorldBounds = true;
                 }
@@ -201,17 +201,19 @@ System.register('src/sprites/player.js', ['npm:babel-runtime@5.8.38/helpers/get.
                 _createClass(Player, [{
                     key: 'move',
                     value: function move(cursors) {
+                        this.body.velocity.x = 0;
+                        this.body.velocity.y = 0;
+                        this.body.angularVelocity = 0;
+
                         if (cursors.up.isDown) {
-                            //this.x += 1;
-                            this.game.physics.arcade.accelerationFromRotation(this.rotation, 25, this.body.acceleration);
+                            this.game.physics.arcade.velocityFromAngle(this.angle, 100, this.body.velocity);
 
                             // play footsteps sound effect while walking
                             if (!this.footsteps.isPlaying) {
                                 this.footsteps.play();
                             }
                         } else if (cursors.down.isDown) {
-                            //this.x -= 1;    
-                            this.game.physics.arcade.accelerationFromRotation(this.rotation, -25, this.body.acceleration);
+                            this.game.physics.arcade.velocityFromAngle(this.angle, -100, this.body.velocity);
 
                             // play footsteps sound effect while walking
                             if (!this.footsteps.isPlaying) {
@@ -227,11 +229,9 @@ System.register('src/sprites/player.js', ['npm:babel-runtime@5.8.38/helpers/get.
                         }
 
                         if (cursors.left.isDown) {
-                            this.body.angularVelocity = -50;
+                            this.body.angularVelocity = -150;
                         } else if (cursors.right.isDown) {
-                            this.body.angularVelocity = 50;
-                        } else {
-                            this.body.angularVelocity = 0;
+                            this.body.angularVelocity = 150;
                         }
                     }
                 }]);

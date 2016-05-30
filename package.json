@@ -13,10 +13,11 @@
     "url": "git+https://github.com/townsean/mini-ld-67.git"
   },
   "keywords": [
-    "ludum",
-    "dare",
+    "ludum dare",
+    "phaser",
     "minild",
-    "pac-man"
+    "pac-man",
+    "raycasting"
   ],
   "author": "Ashley Grenon",
   "license": "MIT",
