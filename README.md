@@ -21,6 +21,7 @@ Source code for our [MiniLD #67](http://ludumdare.com/compo/2016/05/19/minild-67
 * Game Over music: http://opengameart.org/content/game-over-iii
 * Horror Tile Set: http://opengameart.org/content/horror-tile-set
 * Victory music: http://opengameart.org/content/win-music-3
+* Heartbeat: http://opengameart.org/content/heartbeat-sounds
 
 ## Useful tutorials
 

@@ -42,6 +42,7 @@ export class Play extends Phaser.State {
 
         this.camera = new Camera(document.getElementById('display'), this.world, 0.8, 320);
         
+        this.heartbeat = this.game.add.audio('heartbeat');
         this.backgroundAudio = this.game.add.audio('backgroundAudio');
         this.game.sound.setDecodedCallback(this.backgroundAudio, this.startAudio, this);
         
@@ -85,11 +86,34 @@ export class Play extends Phaser.State {
             // todo: go to some point on the map
         }
         
+        this.updateHeartbeat();
+        
         this.game.physics.arcade.collide(this.orbs, this.orbs);
         this.game.physics.arcade.collide(this.player, this.orbs, this.acquireOrb, null, this);
         this.game.physics.arcade.overlap(this.player, this.ghosts, this.ghostTouchesPlayer, null, this);
         this.game.physics.arcade.collide(this.player, this.layer);
         this.camera.render(this.player);
+    }
+    
+    updateHeartbeat() {
+        
+        let isGhostNearPlayer = false;
+        for(let x = 0; x < this.ghosts.length; x++) {
+            if (this.game.physics.arcade.distanceBetween(this.player, this.ghosts.getAt(x)) < 250) {
+                if(!this.heartbeatIsPlaying) {                    
+                    this.heartbeat.loopFull();
+                    this.heartbeatIsPlaying = true;
+                }
+                
+                isGhostNearPlayer = true;
+                break;
+            } 
+        }
+        
+        if (!isGhostNearPlayer) {
+            this.heartbeat.stop();
+            this.heartbeatIsPlaying = false;
+        }
     }
     
     acquireOrb(player, orb) {
@@ -138,5 +162,9 @@ export class Play extends Phaser.State {
         if (this.largeOrbSoundEffect.isPlaying) {
             this.largeOrbSoundEffect.stop();
         } 
+        
+        if(this.heartbeatIsPlaying) {
+            this.heartbeat.stop();
+        }
     }
 }

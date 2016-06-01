@@ -45,6 +45,7 @@ System.register('src/states/load.js', ['npm:babel-runtime@5.8.38/helpers/get.js'
                         this.game.load.audio('gameover', 'assets/gameover.ogg');
                         this.game.load.audio('victory', 'assets/victory.wav');
                         this.game.load.audio('scream', ['assets/scream.mp3', 'assets/scream.ogg']);
+                        this.game.load.audio('heartbeat', 'assets/heartbeat.wav');
 
                         this.game.load.image('background', 'assets/grunge-tileset.png');
 
@@ -186,8 +187,6 @@ System.register('src/sprites/player.js', ['npm:babel-runtime@5.8.38/helpers/get.
                     square.ctx.fill();
 
                     _get(Object.getPrototypeOf(Player.prototype), 'constructor', this).call(this, game, x, y, square);
-
-                    // super(game, x, y, 'player');
 
                     this.footsteps = this.game.add.audio('footsteps');
 
@@ -759,6 +758,7 @@ System.register('src/states/play.js', ['npm:babel-runtime@5.8.38/helpers/get.js'
 
                         this.camera = new Camera(document.getElementById('display'), this.world, 0.8, 320);
 
+                        this.heartbeat = this.game.add.audio('heartbeat');
                         this.backgroundAudio = this.game.add.audio('backgroundAudio');
                         this.game.sound.setDecodedCallback(this.backgroundAudio, this.startAudio, this);
 
@@ -803,11 +803,35 @@ System.register('src/states/play.js', ['npm:babel-runtime@5.8.38/helpers/get.js'
                             // todo: go to some point on the map
                         }
 
+                        this.updateHeartbeat();
+
                         this.game.physics.arcade.collide(this.orbs, this.orbs);
                         this.game.physics.arcade.collide(this.player, this.orbs, this.acquireOrb, null, this);
                         this.game.physics.arcade.overlap(this.player, this.ghosts, this.ghostTouchesPlayer, null, this);
                         this.game.physics.arcade.collide(this.player, this.layer);
                         this.camera.render(this.player);
+                    }
+                }, {
+                    key: 'updateHeartbeat',
+                    value: function updateHeartbeat() {
+
+                        var isGhostNearPlayer = false;
+                        for (var x = 0; x < this.ghosts.length; x++) {
+                            if (this.game.physics.arcade.distanceBetween(this.player, this.ghosts.getAt(x)) < 250) {
+                                if (!this.heartbeatIsPlaying) {
+                                    this.heartbeat.loopFull();
+                                    this.heartbeatIsPlaying = true;
+                                }
+
+                                isGhostNearPlayer = true;
+                                break;
+                            }
+                        }
+
+                        if (!isGhostNearPlayer) {
+                            this.heartbeat.stop();
+                            this.heartbeatIsPlaying = false;
+                        }
                     }
                 }, {
                     key: 'acquireOrb',
@@ -859,6 +883,11 @@ System.register('src/states/play.js', ['npm:babel-runtime@5.8.38/helpers/get.js'
 
                         if (this.largeOrbSoundEffect.isPlaying) {
                             this.largeOrbSoundEffect.stop();
+                        }
+
+                        if (this.heartbeatIsPlaying) {
+                            this.heartbeat.loop = false;
+                            this.heartbeat.stop();
                         }
                     }
                 }]);

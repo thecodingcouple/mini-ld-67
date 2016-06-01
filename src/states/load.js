@@ -19,6 +19,7 @@ export class Load extends Phaser.State {
         this.game.load.audio('gameover', 'assets/gameover.ogg');
         this.game.load.audio('victory', 'assets/victory.wav');
         this.game.load.audio('scream', ['assets/scream.mp3', 'assets/scream.ogg']);
+        this.game.load.audio('heartbeat', 'assets/heartbeat.wav');
         
         this.game.load.image('background', 'assets/grunge-tileset.png');
         
